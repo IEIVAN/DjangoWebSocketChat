@@ -9,8 +9,15 @@
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
+    {{ messages|json_script:"messages" }}
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        let messages = JSON.parse(document.getElementById('messages').textContent);
+        messages = JSON.parse(messages);
+        for (message of messages){
+        add_message(message.fields)
+
+        }
 
         const chatSocket = new WebSocket(
             'ws://'
@@ -22,7 +29,7 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.pub_date +' '+ data.username + ': ' + data.message + '\n');
+            add_message(data);
         };
 
         chatSocket.onclose = function(e) {
@@ -45,6 +52,13 @@
             }));
             messageInputDom.value = '';
         };
+
+        function add_message(data){
+            data.pub_date = new Date(data.pub_date)
+            data.pub_date = data.pub_date.toLocaleTimeString().substr(0, 5)
+            document.querySelector('#chat-log').value += (data.pub_date +' '+ data.username + ': ' + data.message + '\n');
+            }
+
     </script>
 </body>
 </html>

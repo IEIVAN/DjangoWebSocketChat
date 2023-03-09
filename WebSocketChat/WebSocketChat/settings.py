@@ -13,8 +13,8 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
-    'chat',
     'channels',
+    'chat',
     'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -95,7 +95,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# ASGI_APPLICATION = 'WebSocketChat.routing.application'
 ASGI_APPLICATION = "WebSocketChat.asgi.application"
 
 
